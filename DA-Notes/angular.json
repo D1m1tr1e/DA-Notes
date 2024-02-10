@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DA-Notes": {
+    "da-notes": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -62,10 +62,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "DA-Notes:build:production"
+              "buildTarget": "da-notes:build:production"
             },
             "development": {
-              "buildTarget": "DA-Notes:build:development"
+              "buildTarget": "da-notes:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +73,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "DA-Notes:build"
+            "buildTarget": "da-notes:build"
           }
         },
         "test": {
@@ -94,6 +94,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "da-notes:build:production",
+              "serveTarget": "da-notes:serve:production"
+            },
+            "development": {
+              "buildTarget": "da-notes:build:development",
+              "serveTarget": "da-notes:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

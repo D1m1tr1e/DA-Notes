@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "da-notes-4dd89": {
+      "hosting": {
+        "da-notes": [
+          "da-notes-4dd89"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "da-notes-4dd89"
+  }
+}
