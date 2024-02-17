@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Note } from '../interfaces/note.interface'
-import { Firestore, collectionData, doc } from '@angular/fire/firestore';
+import { Firestore, collectionData, doc, onSnapshot } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { collection } from '@firebase/firestore';
 
@@ -10,12 +10,15 @@ import { collection } from '@firebase/firestore';
 export class NoteListService {
 
   firestore: Firestore = inject(Firestore);
-  items$;
-  items;
-  //const itemCollection = collection(this.firestore, 'item');
+
+  trashNotes: Note[] = [];
+  normalNotes: Note[] = [];
+  
+  unsubNotes;
+  unsubTrash;
 
   //Greit auf die Sammlung Notes aus dem Projekt /Firebase
-  getNotesRef() { 
+  getNotesRef() {
     return collection(this.firestore, 'notes');
   }
 
@@ -25,18 +28,48 @@ export class NoteListService {
   }
 
   //Greift auf den Sammlung der IDs im Projekt aus Firebase
-  getSingleDocRef(colId: string, docId: string) { 
+  getSingleDocRef(colId: string, docId: string) {
     return doc(collection(this.firestore, colId, docId));
   }
 
   constructor() {
-    this.items$ = collectionData(this.getNotesRef())
-    this.items = this.items$.subscribe((list) =>{
-      list.forEach(element => {
-        console.log(element);
-      });
-    } );
-    this.items.unsubscribe();
+    this.unsubNotes = this.subNotesList();
+    this.unsubTrash = this.subTrashList();
   }
-  
+
+  ngonDestroy() {
+    this.unsubNotes();
+    this.unsubTrash();
+  }
+
+  subNotesList() {
+    return onSnapshot(this.getNotesRef(), (list) => {
+      this.normalNotes = [];
+      list.forEach(element => {
+        this.normalNotes.push(this.setNoteObject(element.data(), element.id))
+        console.log('meine element.data():',element.data());
+        console.log('Inhalt der normalNotes:', this.normalNotes);
+      });
+    });
+  }
+
+  subTrashList() {
+    return onSnapshot(this.getTrashRef(), (list) => {
+      this.trashNotes = [];
+      list.forEach(element => {
+        this.trashNotes.push(this.setNoteObject(element.data(), element.id))
+      });
+    });
+  }
+
+  setNoteObject(obj: any, id: string): Note {
+    return {
+      id: id || "",
+      type: obj.type || "note",
+      title: obj.title || "",
+      content: obj.content || "",
+      marked: obj.market || false
+    }
+  }
+
 }

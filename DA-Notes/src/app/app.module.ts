@@ -25,7 +25,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    provideFirebaseApp(() => initializeApp({"projectId":"da-notes-4dd89","appId":"1:781092205506:web:acc1485b82086cb5275c5b","storageBucket":"da-notes-4dd89.appspot.com","apiKey":"AIzaSyBab_4y1sG8fjJGgzUjOQv-vr9IAeVdNww","authDomain":"da-notes-4dd89.firebaseapp.com","messagingSenderId":"781092205506"})),
+    provideFirebaseApp(() => initializeApp({ "projectId": "da-notes-4dd89", "appId": "1:781092205506:web:acc1485b82086cb5275c5b", "storageBucket": "da-notes-4dd89.appspot.com", "apiKey": "AIzaSyBab_4y1sG8fjJGgzUjOQv-vr9IAeVdNww", "authDomain": "da-notes-4dd89.firebaseapp.com", "messagingSenderId": "781092205506" })),
     provideFirestore(() => getFirestore()),
   ],
   providers: [],
