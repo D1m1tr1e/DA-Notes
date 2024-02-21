@@ -10,6 +10,7 @@ import { stringLength } from '@firebase/util';
 })
 export class AddNoteDialogComponent {
   @Output() addDialogClosed: EventEmitter<boolean> = new EventEmitter();
+  
   title = "";
   description = "";
 
