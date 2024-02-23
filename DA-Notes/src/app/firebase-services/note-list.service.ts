@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Note } from '../interfaces/note.interface'
-import { Firestore, collectionData, doc, onSnapshot, addDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, doc, onSnapshot, addDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { collection } from '@firebase/firestore';
 
@@ -37,14 +37,23 @@ export class NoteListService {
     this.unsubTrash = this.subTrashList();
   }
 
+  async deleteNote(colId: string, docId: string) {
+    await deleteDoc(this.getSingleDocRef(colId, docId)).catch(
+      (err) => { console.log(err) }
+    )
+  }
+
   async updateNote(note: Note) {
 
     if (note.id) {
-      let docRef = this.getSingleDocRef(this.getColIdFormNote(note), note.id)
+      const colId = this.getColIdFormNote(note);
+      const docRef = doc(this.firestore, colId, note.id);
       await updateDoc(docRef, this.getCleanJson(note)).catch(
-        (err) => { console.error(err) }
-      )
-    
+        (err) => { console.error(err); }
+        /* let docRef = this.getSingleDocRef(this.getColIdFormNote(note), note.id)
+          await updateDoc(docRef, this.getCleanJson(note)).catch(
+            (err) => { console.error(err) }*/
+      );
     }
   }
 
@@ -58,10 +67,10 @@ export class NoteListService {
   }
 
   getColIdFormNote(note: Note) {
-    if (note.type == "note") {
-      return 'notes';
+    if (note.type == 'note') {
+      return 'notes'
     } else {
-      return 'trash;'
+      return 'trash'
     }
   }
 
@@ -102,7 +111,7 @@ export class NoteListService {
       type: obj.type || "note",
       title: obj.title || "",
       content: obj.content || "",
-      marked: obj.market || false
+      marked: obj.marked || false
     }
   }
 

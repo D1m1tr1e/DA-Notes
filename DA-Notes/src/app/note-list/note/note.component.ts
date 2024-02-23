@@ -35,7 +35,13 @@ export class NoteComponent {
   }
 
   moveToTrash(){
-    this.note.type = 'trash';
+    if (this.note.id){
+      this.note.type = 'trash';
+      let colId = this.note.id;
+      delete this.note.id;
+      this.noteService.addNote(this.note);
+      this.noteService.deleteNote("notes", colId);
+    }
   }
 
   moveToNotes(){
