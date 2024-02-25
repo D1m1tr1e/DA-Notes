@@ -49,7 +49,10 @@ export class NoteComponent {
   }
 
   deleteNote(){
-
+    if (this.note.id){
+      let colId = this.note.id;
+      this.noteService.deleteNote("trash", colId);
+    }
   }
 
   saveNote(){
